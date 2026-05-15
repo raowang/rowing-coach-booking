@@ -35,16 +35,18 @@ Page({
         }
       })
 
-      if (res.data.items) {
+      if (res.data && res.data.items) {
         this.setData({
           coaches: this.data.page === 1 ? res.data.items : [...this.data.coaches, ...res.data.items],
           loading: false,
           noMore: res.data.items.length < this.data.pageSize
         })
+      } else {
+        this.setData({ loading: false })
       }
     } catch (err) {
-      console.error('Failed to load coaches:', err)
-      this.setData({ loading: false })
+      console.log('Coaches not available (backend offline)')
+      this.setData({ loading: false, noMore: true })
     }
   },
 
@@ -56,14 +58,14 @@ Page({
         data: { openid: app.globalData.openid }
       })
 
-      if (res.data.recommendation) {
+      if (res.data && res.data.recommendation) {
         this.setData({
           showRecommendation: true,
           recommendation: res.data.recommendation
         })
       }
     } catch (err) {
-      console.error('Failed to load AI recommendation:', err)
+      console.log('AI recommendation not available (backend offline)')
     }
   },
 
