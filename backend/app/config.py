@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
 
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/rowing_coach"
-    directus_url: str = "http://localhost:8030"
+    directus_url: str = "http://localhost:8055"
     directus_token: str = ""
     valkey_url: str = "redis://localhost:6379/0"
     ollama_base_url: str = "http://localhost:11434"
