@@ -56,7 +56,7 @@
         <view class="section-title">选择时间</view>
         <view class="time-grid">
           <view
-            class="time-item {{item.available ? '' : 'disabled'}} {{selectedTimeSlot?.id === item.id ? 'selected' : ''}}"
+            class="time-item {{item.available ? '' : 'disabled'}} {{selectedTimeSlot && selectedTimeSlot.id === item.id ? 'selected' : ''}}"
             wx:for="{{availableTimeSlots}}"
             wx:key="id"
             data-slot-id="{{item.id}}"

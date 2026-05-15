@@ -27,26 +27,26 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "assets/icons/home.png",
-        "selectedIconPath": "assets/icons/home-active.png"
+        "iconPath": "miniprogram/assets/icons/home.png",
+        "selectedIconPath": "miniprogram/assets/icons/home-active.png"
       },
       {
         "pagePath": "pages/coach-list/coach-list",
         "text": "教练",
-        "iconPath": "assets/icons/coach.png",
-        "selectedIconPath": "assets/icons/coach-active.png"
+        "iconPath": "miniprogram/assets/icons/coach.png",
+        "selectedIconPath": "miniprogram/assets/icons/coach-active.png"
       },
       {
         "pagePath": "pages/schedule/schedule",
         "text": "日程",
-        "iconPath": "assets/icons/schedule.png",
-        "selectedIconPath": "assets/icons/schedule-active.png"
+        "iconPath": "miniprogram/assets/icons/schedule.png",
+        "selectedIconPath": "miniprogram/assets/icons/schedule-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
         "text": "我的",
-        "iconPath": "assets/icons/profile.png",
-        "selectedIconPath": "assets/icons/profile-active.png"
+        "iconPath": "miniprogram/assets/icons/profile.png",
+        "selectedIconPath": "miniprogram/assets/icons/profile-active.png"
       }
     ]
   },
