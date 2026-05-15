@@ -1,0 +1,107 @@
+<view class="page">
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="greeting-section">
+        <text class="greeting-text">{{greeting}}</text>
+      </view>
+      <view class="avatar-section" bindtap="onProfileTap">
+        <image class="avatar" src="{{memberProfile.avatarUrl || '/assets/images/default-avatar.png'}}" mode="aspectFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class="content">
+    <view class="quick-actions">
+      <view class="section-title">快捷服务</view>
+      <view class="actions-grid">
+        <view
+          class="action-item"
+          wx:for="{{quickActions}}"
+          wx:key="id"
+          data-path="{{item.path}}"
+          bindtap="onQuickActionTap"
+        >
+          <view class="action-icon">{{item.icon}}</view>
+          <view class="action-title">{{item.title}}</view>
+          <view class="action-desc">{{item.desc}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="upcoming-section" wx:if="{{upcomingBookings.length > 0}}">
+      <view class="section-header">
+        <view class="section-title">即将到来的训练</view>
+        <view class="section-more" bindtap="onViewAllSchedule">查看全部</view>
+      </view>
+      <view class="bookings-list">
+        <view
+          class="booking-item"
+          wx:for="{{upcomingBookings}}"
+          wx:key="id"
+          data-booking-id="{{item.id}}"
+          bindtap="onBookingTap"
+        >
+          <view class="booking-date">
+            <view class="date-day">{{item.dateDay}}</view>
+            <view class="date-month">{{item.dateMonth}}月</view>
+          </view>
+          <view class="booking-info">
+            <view class="booking-coach">{{item.coachName}}</view>
+            <view class="booking-time">{{item.timeSlot}}</view>
+            <view class="booking-status badge-{{item.status}}">{{item.statusText}}</view>
+          </view>
+          <view class="booking-arrow">›</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="coaches-section" wx:if="{{recommendedCoaches.length > 0}}">
+      <view class="section-header">
+        <view class="section-title">为您推荐</view>
+        <view class="section-more" bindtap="onViewAllCoaches">查看全部</view>
+      </view>
+      <scroll-view class="coaches-scroll" scroll-x="true">
+        <view class="coaches-row">
+          <view
+            class="coach-item"
+            wx:for="{{recommendedCoaches}}"
+            wx:key="id"
+            data-coach-id="{{item.id}}"
+            bindtap="onCoachTap"
+          >
+            <image class="coach-avatar" src="{{item.avatarUrl || '/assets/images/default-coach.png'}}" mode="aspectFill"></image>
+            <view class="coach-name">{{item.name}}</view>
+            <view class="coach-tags">
+              <text class="coach-tag" wx:for="{{item.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+            </view>
+            <view class="coach-rating">
+              <text class="star">★</text>
+              <text class="rating-text">{{item.rating}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="tips-section">
+      <view class="section-title">训练小贴士</view>
+      <view class="tip-card">
+        <view class="tip-icon">💡</view>
+        <view class="tip-content">
+          <view class="tip-title">划水动作优化</view>
+          <view class="tip-desc">保持划水时肘部高于手腕，可以提高划水效率约15%</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="chat-fab" bindtap="onChatTap">
+    <text class="chat-icon">💬</text>
+  </view>
+
+  <chat
+    wx:if="{{showChat}}"
+    bind:close="onCloseChat"
+  />
+</view>

@@ -1,0 +1,21 @@
+{
+  "name": "rowing-coach-booking-tests",
+  "version": "1.0.0",
+  "description": "Unit tests for Rowing Coach Booking Mini Program",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["./tests/setup.js"]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@babel/preset-env": "^7.23.0",
+    "@babel/preset-react": "^7.23.0",
+    "@testing-library/jest-dom": "^6.1.0",
+    "@testing-library/react": "^14.0.0"
+  }
+}

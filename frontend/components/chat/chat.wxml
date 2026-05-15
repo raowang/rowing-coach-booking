@@ -1,0 +1,115 @@
+<view class="chat-container">
+  <view class="chat-header">
+    <view class="header-left">
+      <view class="ai-avatar">
+        <text class="ai-avatar-icon">🤖</text>
+      </view>
+      <view class="header-info">
+        <view class="header-title">AI助手</view>
+        <view class="header-status">在线</view>
+      </view>
+    </view>
+    <view class="header-close" bindtap="onClose">×</view>
+  </view>
+
+  <scroll-view
+    class="chat-messages"
+    scroll-y="true"
+    scroll-top="{{scrollTop}}"
+    bindscroll="onScroll"
+  >
+    <view class="messages-list">
+      <view
+        class="message-item {{message.role}}"
+        wx:for="{{messages}}"
+        wx:key="id"
+      >
+        <view class="message-avatar" wx:if="{{message.role === 'assistant'}}">
+          <text class="avatar-icon">🤖</text>
+        </view>
+
+        <view class="message-content-wrapper">
+          <view class="message-bubble {{message.isTyping ? 'typing' : ''}}">
+            <text wx:if="{{message.isTyping}}" class="typing-dots">...</text>
+            <text wx:else class="message-text">{{message.content}}</text>
+          </view>
+
+          <view class="message-suggestions" wx:if="{{message.suggestions && message.suggestions.length > 0 && !message.isTyping}}">
+            <view
+              class="suggestion-chip"
+              wx:for="{{message.suggestions}}"
+              wx:key="id"
+              data-suggestion-text="{{item.text}}"
+              bindtap="onSuggestionTap"
+            >
+              {{item.text}}
+            </view>
+          </view>
+
+          <view class="message-action" wx:if="{{message.action && !message.isTyping}}">
+            <view
+              class="action-btn"
+              data-action-type="{{message.action.type}}"
+              data-action-path="{{message.action.path}}"
+              bindtap="onActionTap"
+            >
+              <text class="action-icon">↗</text>
+              <text class="action-text">点击查看</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="message-avatar user" wx:if="{{message.role === 'user'}}">
+          <text class="avatar-icon">👤</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="quick-replies" wx:if="{{showQuickReplies && messages.length <= 2}}">
+    <view
+      class="quick-reply"
+      wx:for="{{quickReplies}}"
+      wx:key="id"
+      data-reply-id="{{item.id}}"
+      data-reply-text="{{item.text}}"
+      bindtap="onQuickReplyTap"
+    >
+      {{item.text}}
+    </view>
+  </view>
+
+  <view class="chat-input-bar">
+    <view
+      class="voice-btn {{isRecording ? 'recording' : ''}}"
+      bindtap="onVoiceRecord"
+    >
+      <text class="voice-icon">{{isRecording ? '⏹' : '🎤'}}</text>
+      <view class="recording-indicator" wx:if="{{isRecording}}">
+        <text class="recording-time">{{recordingDuration}}s</text>
+      </view>
+    </view>
+
+    <view class="input-wrapper">
+      <input
+        class="chat-input"
+        type="text"
+        placeholder="输入消息..."
+        value="{{inputValue}}"
+        bindinput="onInputChange"
+        bindfocus="onInputFocus"
+        bindblur="onInputBlur"
+        bindconfirm="onInputConfirm"
+        confirm-type="send"
+      />
+    </view>
+
+    <view
+      class="send-btn {{inputValue ? 'active' : ''}}"
+      bindtap="onInputConfirm"
+      data-value="{{inputValue}}"
+    >
+      <text class="send-icon">↑</text>
+    </view>
+  </view>
+</view>

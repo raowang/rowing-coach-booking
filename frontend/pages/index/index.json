@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "赛艇中心",
+  "navigationBarBackgroundColor": "#1a365d",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "chat": "/components/chat/chat"
+  }
+}

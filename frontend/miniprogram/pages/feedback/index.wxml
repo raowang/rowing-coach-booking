@@ -1,0 +1,68 @@
+<view class="container">
+  <view class="feedback-header">
+    <view class="coach-info">
+      <image class="coach-avatar" src="{{feedback.coach_photo}}" mode="aspectFill"/>
+      <view class="coach-detail">
+        <text class="coach-name">{{feedback.coach_name}}</text>
+        <text class="training-date">{{feedback.training_date}}</text>
+      </view>
+    </view>
+    <view class="rating-row">
+      <text class="rating-label">评分</text>
+      <view class="stars">
+        <block wx:for="{{5}}" wx:key="index">
+          <image
+            src="/assets/icons/star{{item <= feedback.rating ? '-filled' : ''}}.png"
+            mode="aspectFill"
+          />
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">教练点评</view>
+    <view class="coach-comment">
+      <text>{{feedback.coach_comment || '暂无点评'}}</text>
+    </view>
+  </view>
+
+  <view class="section ai-section">
+    <view class="section-header">
+      <view class="section-title">AI 改善建议</view>
+      <image class="ai-badge" src="/assets/icons/ai-sparkle.png" mode="aspectFill"/>
+    </view>
+    <view class="ai-suggestions">
+      <block wx:for="{{feedback.ai_suggestions}}" wx:key="index">
+        <view class="suggestion-item">
+          <view class="suggestion-icon">
+            <image src="/assets/icons/check-circle.png" mode="aspectFill"/>
+          </view>
+          <view class="suggestion-content">
+            <text class="suggestion-title">{{item.title}}</text>
+            <text class="suggestion-desc">{{item.description}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{feedback.history_suggestions && feedback.history_suggestions.length > 0}}">
+    <view class="section-title">历史薄弱点</view>
+    <view class="history-tags">
+      <block wx:for="{{feedback.history_suggestions}}" wx:key="index">
+        <view class="history-tag">{{item}}</view>
+      </block>
+    </view>
+  </view>
+
+  <view class="action-area">
+    <button class="btn-book-again" bindtap="onBookAgain">再次预约</button>
+    <button class="btn-share" open-type="share">分享给好友</button>
+  </view>
+
+  <view class="next-training-hint" wx:if="{{feedback.next_recommended_time}}">
+    <image src="/assets/icons/calendar-hint.png" mode="aspectFill"/>
+    <text>根据您的训练习惯，建议下次训练时间：{{feedback.next_recommended_time}}</text>
+  </view>
+</view>

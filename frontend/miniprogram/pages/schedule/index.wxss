@@ -1,0 +1,200 @@
+.status-tabs {
+  display: flex;
+  background: #ffffff;
+  padding: 0 32rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #666666;
+  position: relative;
+}
+
+.tab.active {
+  color: #1a5f7a;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64rpx;
+  height: 4rpx;
+  background: #1a5f7a;
+  border-radius: 2rpx;
+}
+
+.booking-list {
+  height: calc(100vh - 100rpx);
+  padding: 24rpx;
+}
+
+.booking-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.booking-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.coach-info-row {
+  display: flex;
+  align-items: center;
+}
+
+.coach-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.coach-text {
+  margin-left: 16rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.coach-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.booking-time {
+  font-size: 26rpx;
+  color: #666666;
+  margin-top: 4rpx;
+}
+
+.status-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.status-badge.status-pending {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.status-badge.status-confirmed {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.status-badge.status-in_progress {
+  background: #e3f2fd;
+  color: #2196f3;
+}
+
+.status-badge.status-completed {
+  background: #f5f5f5;
+  color: #666666;
+}
+
+.status-badge.status-cancelled,
+.status-badge.status-rejected {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.booking-actions {
+  display: flex;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.action-btn {
+  flex: 1;
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 26rpx;
+  border-radius: 36rpx;
+  margin: 0 8rpx;
+  padding: 0;
+}
+
+.action-btn.cancel {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.action-btn.contact {
+  background: #e8f4f8;
+  color: #1a5f7a;
+}
+
+.action-btn.feedback {
+  background: #e8f4f8;
+  color: #1a5f7a;
+}
+
+.action-btn.rebook {
+  background: linear-gradient(135deg, #1a5f7a, #2d8eb4);
+  color: #ffffff;
+}
+
+.ai-suggestion {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16rpx;
+  padding: 16rpx;
+  background: #f0f7fa;
+  border-radius: 12rpx;
+}
+
+.ai-suggestion image {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 12rpx;
+  margin-top: 2rpx;
+}
+
+.ai-suggestion text {
+  flex: 1;
+  font-size: 24rpx;
+  color: #1a5f7a;
+  line-height: 1.4;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.empty-state image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.5;
+}
+
+.empty-state text {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 32rpx;
+}
+
+.btn-book {
+  background: linear-gradient(135deg, #1a5f7a, #2d8eb4);
+  color: #ffffff;
+  border-radius: 44rpx;
+  padding: 24rpx 64rpx;
+  font-size: 30rpx;
+}

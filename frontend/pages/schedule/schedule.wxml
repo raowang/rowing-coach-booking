@@ -1,0 +1,144 @@
+<view class="page">
+  <view class="tabs">
+    <view
+      class="tab-item {{activeTab === item.id ? 'active' : ''}}"
+      wx:for="{{tabs}}"
+      wx:key="id"
+      data-tab-id="{{item.id}}"
+      bindtap="onTabChange"
+    >
+      <text class="tab-name">{{item.name}}</text>
+      <view class="tab-indicator" wx:if="{{activeTab === item.id}}"></view>
+    </view>
+  </view>
+
+  <view class="bookings-content">
+    <view class="loading-state" wx:if="{{isLoading}}">
+      <view class="spinner large"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="bookings-list" wx:elif="{{bookings.length > 0}}">
+      <view
+        class="booking-card"
+        wx:for="{{bookings}}"
+        wx:key="id"
+      >
+        <view class="booking-header" data-booking-id="{{item.id}}" bindtap="onBookingTap">
+          <view class="booking-date-badge">
+            <view class="date-day">{{item.dateDay}}</view>
+            <view class="date-month">{{item.dateMonth}}月</view>
+          </view>
+          <view class="booking-info">
+            <view class="booking-coach">{{item.coachName}}</view>
+            <view class="booking-time">{{item.timeSlot}}</view>
+            <view class="booking-status status-{{item.status}}">{{item.statusText}}</view>
+          </view>
+        </view>
+
+        <view class="booking-actions" wx:if="{{item.status === 'pending' || item.status === 'confirmed'}}">
+          <view
+            class="action-btn"
+            data-booking-id="{{item.id}}"
+            bindtap="onReminderTap"
+          >
+            <text class="action-icon">🔔</text>
+            <text class="action-text">提醒</text>
+          </view>
+          <view
+            class="action-btn"
+            data-booking-id="{{item.id}}"
+            bindtap="onAddToCalendar"
+          >
+            <text class="action-icon">📅</text>
+            <text class="action-text">日历</text>
+          </view>
+          <view
+            class="action-btn cancel"
+            data-booking-id="{{item.id}}"
+            bindtap="onCancelTap"
+          >
+            <text class="action-icon">✕</text>
+            <text class="action-text">取消</text>
+          </view>
+        </view>
+
+        <view class="booking-footer" wx:if="{{item.status === 'completed'}}" data-booking-id="{{item.id}}" bindtap="onBookingTap">
+          <view class="feedback-preview" wx:if="{{item.feedback}}">
+            <text class="feedback-label">教练点评：</text>
+            <text class="feedback-text">{{item.feedback}}</text>
+          </view>
+          <view class="view-feedback" wx:else>
+            <text class="view-feedback-text">查看训练反馈</text>
+            <text class="view-feedback-arrow">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:elif="{{!isLoading}}">
+      <text class="empty-icon">📋</text>
+      <text class="empty-title">暂无日程</text>
+      <text class="empty-desc">
+        <text wx:if="{{activeTab === 'upcoming'}}">去预约一场训练吧</text>
+        <text wx:elif="{{activeTab === 'completed'}}">还没有已完成的训练</text>
+        <text wx:else>没有取消的预约</text>
+      </text>
+      <button
+        class="btn btn-primary mt-4"
+        wx:if="{{activeTab === 'upcoming'}}"
+        bindtap="onBookTap"
+      >立即预约</button>
+    </view>
+  </view>
+
+  <view class="cancel-modal" wx:if="{{showCancelModal}}" catchtouchmove="preventTouchMove">
+    <view class="modal-mask" bindtap="onCloseCancelModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">取消预约</text>
+        <view class="modal-close" bindtap="onCloseCancelModal">×</view>
+      </view>
+      <view class="modal-body">
+        <view class="cancel-booking-info">
+          <view class="info-row">
+            <text class="info-label">教练</text>
+            <text class="info-value">{{selectedBooking.coachName}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">日期</text>
+            <text class="info-value">{{selectedBooking.date}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">时间</text>
+            <text class="info-value">{{selectedBooking.timeSlot}}</text>
+          </view>
+        </view>
+
+        <view class="cancel-reason-section">
+          <text class="reason-label">取消原因（可选）</text>
+          <textarea
+            class="reason-input"
+            placeholder="请输入取消原因"
+            value="{{cancelReason}}"
+            bindinput="onCancelReasonInput"
+            maxlength="200"
+          ></textarea>
+        </view>
+
+        <view class="cancel-notice">
+          <text class="notice-icon">⚠️</text>
+          <text class="notice-text">请提前24小时取消，否则可能影响您的信用记录</text>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn btn-outline" bindtap="onCloseCancelModal">返回</button>
+        <button
+          class="btn btn-danger"
+          loading="{{isCancelling}}"
+          bindtap="onConfirmCancel"
+        >确认取消</button>
+      </view>
+    </view>
+  </view>
+</view>

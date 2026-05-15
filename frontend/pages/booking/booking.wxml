@@ -1,0 +1,195 @@
+<view class="page">
+  <view class="step-indicator">
+    <view class="step-item {{step >= 1 ? 'active' : ''}}">
+      <view class="step-circle">1</view>
+      <view class="step-label">选择时间</view>
+    </view>
+    <view class="step-line {{step > 1 ? 'active' : ''}}"></view>
+    <view class="step-item {{step >= 2 ? 'active' : ''}}">
+      <view class="step-circle">2</view>
+      <view class="step-label">确认预约</view>
+    </view>
+    <view class="step-line {{step > 2 ? 'active' : ''}}"></view>
+    <view class="step-item {{step >= 3 ? 'active' : ''}}">
+      <view class="step-circle">3</view>
+      <view class="step-label">完成</view>
+    </view>
+  </view>
+
+  <view class="step-content">
+    <view class="step-1" wx:if="{{step === 1}}">
+      <view class="coach-section" wx:if="{{coach}}">
+        <view class="section-title">教练信息</view>
+        <view class="coach-card">
+          <image class="coach-avatar" src="{{coach.avatarUrl || '/assets/images/default-coach.png'}}" mode="aspectFill"></image>
+          <view class="coach-info">
+            <view class="coach-name">{{coach.name}}</view>
+            <view class="coach-title">{{coach.title}}</view>
+            <view class="coach-tags">
+              <text class="coach-tag" wx:for="{{coach.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="date-section">
+        <view class="section-title">选择日期</view>
+        <scroll-view class="date-scroll" scroll-x="true">
+          <view class="date-list">
+            <view
+              class="date-item {{selectedDate === item.date ? 'selected' : ''}} {{item.isToday ? 'today' : ''}}"
+              wx:for="{{availableDates}}"
+              wx:key="date"
+              data-date="{{item.date}}"
+              bindtap="onDateSelect"
+            >
+              <view class="date-dayname">{{item.dayName}}</view>
+              <view class="date-day">{{item.day}}</view>
+              <view class="date-month">{{item.month}}月</view>
+              <view class="date-today" wx:if="{{item.isToday}}">今天</view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="time-section" wx:if="{{selectedDate}}">
+        <view class="section-title">选择时间</view>
+        <view class="time-grid">
+          <view
+            class="time-item {{item.available ? '' : 'disabled'}} {{selectedTimeSlot?.id === item.id ? 'selected' : ''}}"
+            wx:for="{{availableTimeSlots}}"
+            wx:key="id"
+            data-slot-id="{{item.id}}"
+            bindtap="onTimeSlotSelect"
+          >
+            <view class="time-text">{{item.time}}</view>
+            <view class="time-status">{{item.available ? '可预约' : '已满'}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="note-section">
+        <view class="section-title">备注（可选）</view>
+        <view class="note-input-wrapper">
+          <textarea
+            class="note-input"
+            placeholder="有什么想告诉教练的吗？比如训练目标、身体状况等"
+            value="{{bookingNote}}"
+            bindinput="onNoteInput"
+            maxlength="200"
+          ></textarea>
+          <view class="note-suggestions" wx:if="{{memberSuggestions.length > 0}}">
+            <view class="suggestions-header" bindtap="onToggleSuggestions">
+              <text class="suggestions-title">根据您的训练历史</text>
+              <text class="suggestions-toggle">{{showSuggestions ? '收起' : '展开'}}</text>
+            </view>
+            <view class="suggestions-list" wx:if="{{showSuggestions}}">
+              <view
+                class="suggestion-item"
+                wx:for="{{memberSuggestions}}"
+                wx:key="index"
+                data-suggestion="{{item}}"
+                bindtap="onSuggestionTap"
+              >
+                <text class="suggestion-icon">💡</text>
+                <text class="suggestion-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="action-bar">
+        <button
+          class="btn btn-primary btn-block"
+          disabled="{{!selectedDate || !selectedTimeSlot}}"
+          bindtap="onNextStep"
+        >下一步</button>
+      </view>
+    </view>
+
+    <view class="step-2" wx:if="{{step === 2}}">
+      <view class="confirm-section">
+        <view class="section-title">确认预约信息</view>
+        <view class="confirm-card">
+          <view class="confirm-row">
+            <text class="confirm-label">教练</text>
+            <text class="confirm-value">{{coach.name}}</text>
+          </view>
+          <view class="confirm-row">
+            <text class="confirm-label">日期</text>
+            <text class="confirm-value">{{selectedDate}} {{selectedDateObj.dayName}}</text>
+          </view>
+          <view class="confirm-row">
+            <text class="confirm-label">时间</text>
+            <text class="confirm-value">{{selectedTimeSlot.time}}</text>
+          </view>
+          <view class="confirm-row" wx:if="{{bookingNote}}">
+            <text class="confirm-label">备注</text>
+            <text class="confirm-value note">{{bookingNote}}</text>
+          </view>
+        </view>
+
+        <view class="notice-card">
+          <view class="notice-icon">⚠️</view>
+          <view class="notice-content">
+            <view class="notice-title">预约须知</view>
+            <view class="notice-text">请提前10分钟到达场地</view>
+            <view class="notice-text">如需取消，请提前24小时</view>
+            <view class="notice-text">教练确认后预约正式生效</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="action-bar">
+        <button class="btn btn-outline" bindtap="onPrevStep">返回</button>
+        <button
+          class="btn btn-primary"
+          loading="{{isSubmitting}}"
+          bindtap="onSubmitBooking"
+        >确认预约</button>
+      </view>
+    </view>
+
+    <view class="step-3" wx:if="{{step === 3}}">
+      <view class="success-section">
+        <view class="success-icon">✓</view>
+        <view class="success-title">预约成功！</view>
+        <view class="success-desc">教练将在24小时内确认您的预约</view>
+
+        <view class="result-card">
+          <view class="result-row">
+            <text class="result-label">预约编号</text>
+            <text class="result-value">{{bookingResult.id}}</text>
+          </view>
+          <view class="result-row">
+            <text class="result-label">教练</text>
+            <text class="result-value">{{coach.name}}</text>
+          </view>
+          <view class="result-row">
+            <text class="result-label">日期</text>
+            <text class="result-value">{{selectedDate}}</text>
+          </view>
+          <view class="result-row">
+            <text class="result-label">时间</text>
+            <text class="result-value">{{selectedTimeSlot.time}}</text>
+          </view>
+          <view class="result-row">
+            <text class="result-label">状态</text>
+            <text class="result-value status pending">待确认</text>
+          </view>
+        </view>
+
+        <view class="notification-notice">
+          <text class="notification-icon">🔔</text>
+          <text class="notification-text">确认消息将发送到您的微信</text>
+        </view>
+      </view>
+
+      <view class="action-bar">
+        <button class="btn btn-outline" bindtap="onBackToHome">返回首页</button>
+        <button class="btn btn-primary" bindtap="onViewSchedule">查看日程</button>
+      </view>
+    </view>
+  </view>
+</view>

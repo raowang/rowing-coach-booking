@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "教练团队",
+  "navigationBarBackgroundColor": "#1a365d",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "coach-card": "/components/coach-card/coach-card"
+  }
+}

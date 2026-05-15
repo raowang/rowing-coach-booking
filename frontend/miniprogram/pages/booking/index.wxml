@@ -1,0 +1,78 @@
+<view class="container">
+  <view class="booking-header">
+    <view class="coach-summary" bindtap="onChangeCoach">
+      <image class="coach-avatar" src="{{coach.photo_url}}" mode="aspectFill"/>
+      <view class="coach-detail">
+        <text class="coach-name">{{coach.name}}</text>
+        <text class="coach-specialties">{{coach.specialties_text}}</text>
+      </view>
+      <text class="change-hint">更换</text>
+    </view>
+
+    <view class="ai-reason" wx:if="{{aiRecommendReason}}">
+      <image src="/assets/icons/ai-sparkle.png" mode="aspectFill"/>
+      <text>{{aiRecommendReason}}</text>
+    </view>
+  </view>
+
+  <view class="date-section">
+    <text class="section-title">选择日期</text>
+    <scroll-view class="date-list" scroll-x>
+      <view
+        class="date-item {{selectedDate === item.date ? 'active' : ''}}"
+        wx:for="{{availableDates}}"
+        wx:key="date"
+        bindtap="onDateSelect"
+        data-date="{{item.date}}"
+      >
+        <text class="weekday">{{item.weekday}}</text>
+        <text class="day">{{item.day}}</text>
+        <text class="month">{{item.month}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="time-section" wx:if="{{selectedDate}}">
+    <text class="section-title">选择时间</text>
+    <view class="time-grid">
+      <view
+        class="time-slot {{!item.available ? 'disabled' : ''}} {{selectedTime === item.time ? 'active' : ''}}"
+        wx:for="{{availableTimes}}"
+        wx:key="time"
+        bindtap="onTimeSelect"
+        data-time="{{item.time}}"
+        data-available="{{item.available}}"
+      >
+        <text class="time-text">{{item.time}}</text>
+        <text class="availability" wx:if="{{item.available}}">可约</text>
+        <text class="availability full" wx:else>已满</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="booking-summary" wx:if="{{selectedDate && selectedTime}}">
+    <text class="summary-title">预约详情</text>
+    <view class="summary-row">
+      <text class="label">教练</text>
+      <text class="value">{{coach.name}}</text>
+    </view>
+    <view class="summary-row">
+      <text class="label">日期</text>
+      <text class="value">{{selectedDateText}}</text>
+    </view>
+    <view class="summary-row">
+      <text class="label">时间</text>
+      <text class="value">{{selectedTime}}</text>
+    </view>
+  </view>
+
+  <view class="confirm-area">
+    <button class="btn-confirm {{canConfirm ? 'active' : ''}}" bindtap="onConfirmBooking" disabled="{{!canConfirm}}">
+      确认预约
+    </button>
+  </view>
+
+  <view class="note">
+    <text>预约成功后，教练将在24小时内确认</text>
+  </view>
+</view>

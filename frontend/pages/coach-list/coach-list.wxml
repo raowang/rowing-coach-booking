@@ -1,0 +1,168 @@
+<view class="page">
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="搜索教练姓名"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+      />
+    </view>
+  </view>
+
+  <view class="filter-bar">
+    <scroll-view class="filter-scroll" scroll-x="true">
+      <view class="filter-list">
+        <view
+          class="filter-item {{selectedFilter === item.id ? 'active' : ''}}"
+          wx:for="{{filterTags}}"
+          wx:key="id"
+          data-filter-id="{{item.id}}"
+          bindtap="onFilterTap"
+        >
+          <text class="filter-icon">{{item.icon}}</text>
+          <text class="filter-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="recommended-section" wx:if="{{recommendedCoaches.length > 0 && !searchKeyword && !selectedFilter}}">
+    <view class="section-header">
+      <view class="section-title">AI智能推荐</view>
+      <view class="ai-badge">
+        <text class="ai-icon">🤖</text>
+        <text class="ai-text">根据您的训练历史推荐</text>
+      </view>
+    </view>
+    <scroll-view class="recommended-scroll" scroll-x="true">
+      <view class="recommended-row">
+        <view
+          class="recommended-item"
+          wx:for="{{recommendedCoaches}}"
+          wx:key="id"
+          data-coach-id="{{item.id}}"
+          bindtap="onRecommendedCoachTap"
+        >
+          <view class="recommended-badge">推荐</view>
+          <image class="recommended-avatar" src="{{item.avatarUrl || '/assets/images/default-coach.png'}}" mode="aspectFill"></image>
+          <view class="recommended-name">{{item.name}}</view>
+          <view class="recommended-reason">{{item.reason}}</view>
+          <view class="recommended-tags">
+            <text class="recommended-tag" wx:for="{{item.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="coach-list">
+    <view class="list-header">
+      <text class="list-count">共 {{coaches.length}} 位教练</text>
+    </view>
+
+    <view class="coach-items">
+      <view
+        class="coach-card"
+        wx:for="{{coaches}}"
+        wx:key="id"
+        data-coach-id="{{item.id}}"
+        bindtap="onCoachTap"
+      >
+        <view class="coach-main">
+          <image class="coach-avatar" src="{{item.avatarUrl || '/assets/images/default-coach.png'}}" mode="aspectFill"></image>
+          <view class="coach-info">
+            <view class="coach-header">
+              <view class="coach-name">{{item.name}}</view>
+              <view class="coach-status {{item.available ? 'available' : 'busy'}}">
+                {{item.available ? '可预约' : '已约满'}}
+              </view>
+            </view>
+            <view class="coach-title">{{item.title}}</view>
+            <view class="coach-tags">
+              <text class="coach-tag" wx:for="{{item.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+            </view>
+            <view class="coach-stats">
+              <view class="stat-item">
+                <text class="stat-value">{{item.rating}}</text>
+                <text class="stat-label">评分</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-value">{{item.trainingCount}}</text>
+                <text class="stat-label">训练次数</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-value">{{item.yearsOfExperience}}</text>
+                <text class="stat-label">年经验</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="coach-description">{{item.description}}</view>
+        <view class="coach-action">
+          <text class="action-text">立即预约</text>
+          <text class="action-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading-more" wx:if="{{isLoadingMore}}">
+      <view class="spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view class="no-more" wx:if="{{!hasMore && coaches.length > 0}}">
+      <text>没有更多教练了</text>
+    </view>
+
+    <view class="empty-state" wx:if="{{!isLoading && coaches.length === 0}}">
+      <text class="empty-icon">🏃</text>
+      <text class="empty-title">暂无教练</text>
+      <text class="empty-desc">请尝试其他筛选条件</text>
+    </view>
+  </view>
+
+  <view class="loading-overlay" wx:if="{{isLoading && coaches.length === 0}}">
+    <view class="spinner large"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view class="recommendation-modal" wx:if="{{showRecommendationModal && currentRecommendation}}" catchtouchmove="preventTouchMove">
+    <view class="modal-mask" bindtap="onCloseRecommendationModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">为什么推荐这位教练？</text>
+        <view class="modal-close" bindtap="onCloseRecommendationModal">×</view>
+      </view>
+      <view class="modal-body">
+        <view class="rec-coach-info">
+          <image class="rec-coach-avatar" src="{{currentRecommendation.avatarUrl || '/assets/images/default-coach.png'}}" mode="aspectFill"></image>
+          <view class="rec-coach-details">
+            <view class="rec-coach-name">{{currentRecommendation.name}}</view>
+            <view class="rec-coach-title">{{currentRecommendation.title}}</view>
+          </view>
+        </view>
+        <view class="rec-reason-section">
+          <view class="rec-reason-title">推荐理由</view>
+          <view class="rec-reason-list">
+            <view class="rec-reason-item" wx:for="{{currentRecommendation.recommendationReasons}}" wx:key="index">
+              <text class="rec-reason-icon">✓</text>
+              <text class="rec-reason-text">{{item}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="rec-ai-insight" wx:if="{{currentRecommendation.aiInsight}}">
+          <view class="rec-insight-title">AI分析</view>
+          <view class="rec-insight-text">{{currentRecommendation.aiInsight}}</view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn btn-outline" bindtap="onCloseRecommendationModal">取消</button>
+        <button class="btn btn-primary" bindtap="onBookRecommendedCoach">立即预约</button>
+      </view>
+    </view>
+  </view>
+</view>

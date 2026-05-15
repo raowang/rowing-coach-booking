@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/rowing_coach
+      - DIRECTUS_URL=http://directus:8030
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
+      - VALKEY_URL=redis://valkey:6379/0
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - QDRANT_URL=http://host.docker.internal:6333
+    depends_on:
+      - postgres
+      - valkey
+      - directus
+    volumes:
+      - .:/app
+    network_mode: host
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rowing_coach
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  valkey:
+    image: valkey/valkey:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkey_data:/data
+
+  directus:
+    image: directus/directus:latest
+    ports:
+      - "8030:8030"
+    environment:
+      - DB_CLIENT=pg
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=rowing_coach
+      - SECRET=${DIRECTUS_SECRET}
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  valkey_data:

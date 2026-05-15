@@ -1,0 +1,67 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/coach-list/coach-list",
+    "pages/booking/booking",
+    "pages/schedule/schedule",
+    "pages/profile/profile",
+    "pages/feedback/feedback"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#1a365d",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "赛艇中心",
+    "navigationStyle": "custom",
+    "backgroundColor": "#f7fafc",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50
+  },
+  "tabBar": {
+    "color": "#718096",
+    "selectedColor": "#1a365d",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/coach-list/coach-list",
+        "text": "教练",
+        "iconPath": "assets/icons/coach.png",
+        "selectedIconPath": "assets/icons/coach-active.png"
+      },
+      {
+        "pagePath": "pages/schedule/schedule",
+        "text": "日程",
+        "iconPath": "assets/icons/schedule.png",
+        "selectedIconPath": "assets/icons/schedule-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取您的位置以便推荐最近的赛艇中心"
+    }
+  },
+  "requiredBackgroundModes": ["audio"],
+  "usingComponents": {
+    "chat": "/components/chat/chat",
+    "coach-card": "/components/coach-card/coach-card",
+    "booking-card": "/components/booking-card/booking-card"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

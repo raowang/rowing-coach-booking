@@ -1,0 +1,226 @@
+Page({
+  data: {
+    activeTab: 'upcoming',
+    tabs: [
+      { id: 'upcoming', name: '即将到来' },
+      { id: 'completed', name: '已完成' },
+      { id: 'cancelled', name: '已取消' }
+    ],
+    bookings: [],
+    upcomingBookings: [],
+    completedBookings: [],
+    cancelledBookings: [],
+    isLoading: false,
+    selectedBooking: null,
+    showCancelModal: false,
+    cancelReason: '',
+    isCancelling: false
+  },
+
+  onLoad(options) {
+    if (options.bookingId) {
+      this.loadBookingDetail(options.bookingId);
+    }
+  },
+
+  onShow() {
+    this.loadBookings();
+  },
+
+  loadBookings() {
+    this.setData({ isLoading: true });
+
+    const app = getApp();
+
+    Promise.all([
+      app.getBookingSchedule('pending'),
+      app.getBookingSchedule('confirmed'),
+      app.getBookingSchedule('in_progress'),
+      app.getBookingSchedule('completed'),
+      app.getBookingSchedule('cancelled')
+    ]).then(results => {
+      const pending = results[0] || [];
+      const confirmed = results[1] || [];
+      const inProgress = results[2] || [];
+      const completed = results[3] || [];
+      const cancelled = results[4] || [];
+
+      const upcoming = [...pending, ...confirmed, ...inProgress].sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      });
+
+      this.setData({
+        upcomingBookings: upcoming,
+        completedBookings: completed.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        }),
+        cancelledBookings: cancelled.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        }),
+        bookings: upcoming,
+        isLoading: false
+      });
+    }).catch(err => {
+      console.error('Failed to load bookings', err);
+      this.setData({ isLoading: false });
+      wx.showToast({
+        title: '加载失败',
+        icon: 'none'
+      });
+    });
+  },
+
+  loadBookingDetail(bookingId) {
+    const app = getApp();
+    app.getBookingSchedule().then(bookings => {
+      const booking = bookings.find(b => b.id === bookingId);
+      if (booking) {
+        this.setData({ selectedBooking: booking });
+      }
+    }).catch(err => {
+      console.error('Failed to load booking detail', err);
+    });
+  },
+
+  onTabChange(e) {
+    const { tabId } = e.currentTarget.dataset;
+    this.setData({ activeTab: tabId });
+
+    switch (tabId) {
+      case 'upcoming':
+        this.setData({ bookings: this.data.upcomingBookings });
+        break;
+      case 'completed':
+        this.setData({ bookings: this.data.completedBookings });
+        break;
+      case 'cancelled':
+        this.setData({ bookings: this.data.cancelledBookings });
+        break;
+    }
+  },
+
+  onBookingTap(e) {
+    const { bookingId } = e.currentTarget.dataset;
+    wx.navigateTo({
+      url: `/pages/feedback/feedback?bookingId=${bookingId}`
+    });
+  },
+
+  onCancelTap(e) {
+    const { bookingId } = e.currentTarget.dataset;
+    const booking = this.data.upcomingBookings.find(b => b.id === bookingId);
+
+    if (booking) {
+      this.setData({
+        selectedBooking: booking,
+        showCancelModal: true,
+        cancelReason: ''
+      });
+    }
+  },
+
+  onCloseCancelModal() {
+    this.setData({
+      showCancelModal: false,
+      selectedBooking: null,
+      cancelReason: ''
+    });
+  },
+
+  onCancelReasonInput(e) {
+    this.setData({ cancelReason: e.detail.value });
+  },
+
+  onConfirmCancel() {
+    if (this.data.isCancelling) return;
+
+    const booking = this.data.selectedBooking;
+    if (!booking) return;
+
+    this.setData({ isCancelling: true });
+
+    const app = getApp();
+    app.cancelBooking(booking.id, this.data.cancelReason).then(() => {
+      wx.showToast({
+        title: '取消成功',
+        icon: 'success'
+      });
+
+      this.setData({
+        isCancelling: false,
+        showCancelModal: false
+      });
+
+      this.loadBookings();
+    }).catch(err => {
+      console.error('Failed to cancel booking', err);
+      this.setData({ isCancelling: false });
+      wx.showToast({
+        title: '取消失败',
+        icon: 'none'
+      });
+    });
+  },
+
+  onReminderTap(e) {
+    const { bookingId } = e.currentTarget.dataset;
+    const booking = this.data.upcomingBookings.find(b => b.id === bookingId);
+
+    if (booking) {
+      wx.showModal({
+        title: '设置提醒',
+        content: `将在训练前1小时提醒您：${booking.coachName} - ${booking.date}`,
+        confirmText: '确定',
+        success: (res) => {
+          if (res.confirm) {
+            wx.showToast({
+              title: '提醒已设置',
+              icon: 'success'
+            });
+          }
+        }
+      });
+    }
+  },
+
+  onAddToCalendar(e) {
+    const { bookingId } = e.currentTarget.dataset;
+    const booking = this.data.upcomingBookings.find(b => b.id === bookingId);
+
+    if (booking) {
+      const startDate = new Date(`${booking.date}T${booking.timeSlot}:00`);
+      const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+
+      wx.addPhoneCalendar({
+        title: `赛艇训练 - ${booking.coachName}`,
+        startTime: Math.floor(startDate.getTime() / 1000),
+        endTime: Math.floor(endDate.getTime() / 1000),
+        notes: `预约编号: ${booking.id}`,
+        success: () => {
+          wx.showToast({
+            title: '已添加到日历',
+            icon: 'success'
+          });
+        },
+        fail: () => {
+          wx.showToast({
+            title: '添加失败',
+            icon: 'none'
+          });
+        }
+      });
+    }
+  },
+
+  onPullDownRefresh() {
+    this.loadBookings();
+    wx.stopPullDownRefresh();
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '我的训练日程',
+      path: '/pages/schedule/schedule'
+    };
+  }
+});

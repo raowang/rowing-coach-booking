@@ -1,0 +1,163 @@
+.profile-header {
+  display: flex;
+  align-items: center;
+  padding: 48rpx 32rpx;
+  background: linear-gradient(135deg, #1a5f7a 0%, #2d8eb4 100%);
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid #ffffff;
+}
+
+.profile-info {
+  flex: 1;
+  margin-left: 24rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.member-level {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 8rpx;
+}
+
+.btn-edit {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 26rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 32rpx;
+  border: none;
+}
+
+.stats-row {
+  display: flex;
+  background: #ffffff;
+  padding: 32rpx 0;
+  margin-bottom: 16rpx;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1rpx solid #f0f0f0;
+}
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+.stat-value {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1a5f7a;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666666;
+  margin-top: 8rpx;
+}
+
+.section {
+  background: #ffffff;
+  margin-bottom: 16rpx;
+}
+
+.section-title {
+  padding: 24rpx 32rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.info-list {
+  padding: 0 32rpx;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.menu-list {
+  padding: 0 32rpx;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item text {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.menu-value {
+  display: flex;
+  align-items: center;
+}
+
+.menu-value text {
+  font-size: 28rpx;
+  color: #999999;
+  margin-right: 8rpx;
+}
+
+.menu-item image {
+  width: 32rpx;
+  height: 32rpx;
+  opacity: 0.5;
+}
+
+.logout-area {
+  padding: 48rpx 32rpx;
+}
+
+.btn-logout {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #ffffff;
+  color: #f44336;
+  font-size: 30rpx;
+  border-radius: 44rpx;
+  border: none;
+}

@@ -1,0 +1,65 @@
+<view class="container">
+  <view class="status-tabs">
+    <view
+      class="tab {{currentStatus === 'upcoming' ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-status="upcoming"
+    >
+      即将进行
+    </view>
+    <view
+      class="tab {{currentStatus === 'pending' ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-status="pending"
+    >
+      待确认
+    </view>
+    <view
+      class="tab {{currentStatus === 'history' ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-status="history"
+    >
+      历史记录
+    </view>
+  </view>
+
+  <scroll-view class="booking-list" scroll-y>
+    <block wx:for="{{bookings}}" wx:key="id">
+      <view class="booking-card">
+        <view class="booking-header-row">
+          <view class="coach-info-row">
+            <image class="coach-avatar" src="{{item.coach_photo}}" mode="aspectFill"/>
+            <view class="coach-text">
+              <text class="coach-name">{{item.coach_name}}</text>
+              <text class="booking-time">{{item.scheduled_time_text}}</text>
+            </view>
+          </view>
+          <view class="status-badge status-{{item.status}}">
+            <text>{{item.status_text}}</text>
+          </view>
+        </view>
+
+        <view class="booking-actions" wx:if="{{item.status === 'pending' || item.status === 'confirmed'}}">
+          <button class="action-btn cancel" bindtap="onCancelBooking" data-id="{{item.id}}">取消预约</button>
+          <button class="action-btn contact" bindtap="onContactCoach" data-phone="{{item.coach_phone}}">联系教练</button>
+        </view>
+
+        <view class="booking-actions" wx:if="{{item.status === 'completed'}}">
+          <button class="action-btn feedback" bindtap="onViewFeedback" data-id="{{item.id}}">查看反馈</button>
+          <button class="action-btn rebook" bindtap="onRebook" data-coach-id="{{item.coach_id}}">再次预约</button>
+        </view>
+
+        <view class="ai-suggestion" wx:if="{{item.ai_suggestion}}">
+          <image src="/assets/icons/ai-sparkle.png" mode="aspectFill"/>
+          <text>{{item.ai_suggestion}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty-state" wx:if="{{bookings.length === 0}}">
+      <image src="/assets/icons/empty-schedule.png" mode="aspectFill"/>
+      <text>暂无{{currentStatus === 'upcoming' ? '即将进行' : currentStatus === 'pending' ? '待确认' : '历史'}}预约</text>
+      <button class="btn-book" bindtap="onBookNow">立即预约</button>
+    </view>
+  </scroll-view>
+</view>

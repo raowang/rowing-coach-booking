@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "教练列表",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true
+}

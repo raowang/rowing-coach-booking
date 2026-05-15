@@ -1,0 +1,64 @@
+<view class="container">
+  <view class="chat-header">
+    <view class="ai-avatar">
+      <image src="/assets/icons/ai-avatar.png" mode="aspectFill"/>
+    </view>
+    <view class="header-info">
+      <text class="ai-name">赛艇AI助手</text>
+      <text class="ai-status">在线</text>
+    </view>
+  </view>
+
+  <scroll-view class="chat-container" scroll-y scroll-into-view="{{scrollToView}}" enhanced>
+    <block wx:for="{{messages}}" wx:key="id">
+      <view class="message {{item.role}}" id="msg-{{item.id}}">
+        <view class="message-avatar" wx:if="{{item.role === 'assistant'}}">
+          <image src="/assets/icons/ai-avatar.png" mode="aspectFill"/>
+        </view>
+        <view class="message-content">
+          <text class="message-text">{{item.content}}</text>
+          <text class="message-time">{{item.time}}</text>
+        </view>
+        <view class="message-avatar user-avatar" wx:if="{{item.role === 'user'}}">
+          <image src="{{userAvatar}}" mode="aspectFill"/>
+        </view>
+      </view>
+    </block>
+    <view id="scroll-bottom"></view>
+  </scroll-view>
+
+  <view class="input-area">
+    <view class="input-wrapper">
+      <input
+        class="chat-input"
+        type="text"
+        placeholder="输入消息..."
+        bindinput="onInputChange"
+        value="{{inputText}}"
+        confirm-type="send"
+        bindconfirm="onSendMessage"
+      />
+      <view class="voice-btn" bindtap="onVoiceInput">
+        <image src="/assets/icons/mic.png" mode="aspectFill"/>
+      </view>
+    </view>
+    <button class="send-btn {{inputText ? 'active' : ''}}" bindtap="onSendMessage" disabled="{{!inputText}}">
+      发送
+    </button>
+  </view>
+
+  <view class="quick-actions" wx:if="{{showQuickActions}}">
+    <view class="quick-action" bindtap="onQuickAction" data-action="book">
+      <image src="/assets/icons/calendar.png" mode="aspectFill"/>
+      <text>预约教练</text>
+    </view>
+    <view class="quick-action" bindtap="onQuickAction" data-action="coach">
+      <image src="/assets/icons/coach.png" mode="aspectFill"/>
+      <text>查看教练</text>
+    </view>
+    <view class="quick-action" bindtap="onQuickAction" data-action="history">
+      <image src="/assets/icons/history.png" mode="aspectFill"/>
+      <text>训练记录</text>
+    </view>
+  </view>
+</view>

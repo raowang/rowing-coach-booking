@@ -1,0 +1,221 @@
+.booking-header {
+  background: #ffffff;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.coach-summary {
+  display: flex;
+  align-items: center;
+}
+
+.coach-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+}
+
+.coach-detail {
+  flex: 1;
+  margin-left: 24rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.coach-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.coach-specialties {
+  font-size: 24rpx;
+  color: #666666;
+  margin-top: 8rpx;
+}
+
+.change-hint {
+  font-size: 28rpx;
+  color: #1a5f7a;
+}
+
+.ai-reason {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+  padding: 16rpx 20rpx;
+  background: #f0f7fa;
+  border-radius: 12rpx;
+}
+
+.ai-reason image {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 12rpx;
+}
+
+.ai-reason text {
+  font-size: 26rpx;
+  color: #1a5f7a;
+}
+
+.date-section,
+.time-section {
+  background: #ffffff;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.date-list {
+  white-space: nowrap;
+}
+
+.date-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  margin-right: 16rpx;
+  border-radius: 16rpx;
+  background: #f5f5f5;
+}
+
+.date-item.active {
+  background: #1a5f7a;
+  color: #ffffff;
+}
+
+.weekday {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.day {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin: 8rpx 0;
+}
+
+.month {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.date-item.active .weekday,
+.date-item.active .month {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+}
+
+.time-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+  border: 2rpx solid transparent;
+}
+
+.time-slot.active {
+  background: #e8f4f8;
+  border-color: #1a5f7a;
+}
+
+.time-slot.disabled {
+  opacity: 0.5;
+}
+
+.time-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.availability {
+  font-size: 22rpx;
+  color: #07c160;
+  margin-top: 4rpx;
+}
+
+.availability.full {
+  color: #999999;
+}
+
+.booking-summary {
+  background: #ffffff;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.summary-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.confirm-area {
+  padding: 24rpx;
+}
+
+.btn-confirm {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #cccccc;
+  color: #ffffff;
+  font-size: 34rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
+  border: none;
+}
+
+.btn-confirm.active {
+  background: linear-gradient(135deg, #1a5f7a 0%, #2d8eb4 100%);
+}
+
+.note {
+  text-align: center;
+  padding: 16rpx;
+}
+
+.note text {
+  font-size: 24rpx;
+  color: #999999;
+}

@@ -1,0 +1,37 @@
+<view class="booking-card" bindtap="onTap">
+  <view class="card-header">
+    <view class="date-badge">
+      <view class="date-day">{{booking.dateDay}}</view>
+      <view class="date-month">{{booking.dateMonth}}月</view>
+    </view>
+    <view class="booking-info">
+      <view class="booking-coach">{{booking.coachName}}</view>
+      <view class="booking-time">{{booking.timeSlot}}</view>
+      <view class="booking-status status-{{booking.status}}">
+        {{statusMap[booking.status].text}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card-actions" wx:if="{{showActions && (booking.status === 'pending' || booking.status === 'confirmed')}}">
+    <view class="action-btn" catchtap="onReminder">
+      <text class="action-icon">🔔</text>
+      <text class="action-text">提醒</text>
+    </view>
+    <view class="action-btn" catchtap="onCalendar">
+      <text class="action-icon">📅</text>
+      <text class="action-text">日历</text>
+    </view>
+    <view class="action-btn cancel" catchtap="onCancel">
+      <text class="action-icon">✕</text>
+      <text class="action-text">取消</text>
+    </view>
+  </view>
+
+  <view class="card-footer" wx:if="{{booking.status === 'completed' && booking.feedback}}">
+    <view class="feedback-preview">
+      <text class="feedback-label">教练点评：</text>
+      <text class="feedback-text">{{booking.feedback}}</text>
+    </view>
+  </view>
+</view>

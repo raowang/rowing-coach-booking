@@ -1,0 +1,82 @@
+<view class="container">
+  <view class="profile-header">
+    <image class="avatar" src="{{member.avatar_url || '/assets/icons/default-avatar.png'}}" mode="aspectFill"/>
+    <view class="profile-info">
+      <text class="name">{{member.name || '未登录'}}</text>
+      <text class="member-level">{{member.skill_level_text}}</text>
+    </view>
+    <button class="btn-edit" bindtap="onEditProfile">编辑</button>
+  </view>
+
+  <view class="stats-row">
+    <view class="stat-item">
+      <text class="stat-value">{{member.training_count || 0}}</text>
+      <text class="stat-label">训练次数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{member.continue_days || 0}}</text>
+      <text class="stat-label">连续训练</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{member.avg_rating || '0'}}</text>
+      <text class="stat-label">平均评分</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">会员信息</view>
+    <view class="info-list">
+      <view class="info-item">
+        <text class="label">手机号</text>
+        <text class="value">{{member.phone || '未绑定'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">生日</text>
+        <text class="value">{{member.birthday || '未设置'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">会籍有效期</text>
+        <text class="value">{{member.membership_period || '未知'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="label">技术水平</text>
+        <text class="value">{{member.skill_level_text || '初学者'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">偏好设置</view>
+    <view class="menu-list">
+      <view class="menu-item" bindtap="onMenuTap" data-type="teaching-style">
+        <text>教学风格偏好</text>
+        <view class="menu-value">
+          <text>{{member.teaching_style_preference || '未设置'}}</text>
+          <image src="/assets/icons/arrow-right.png" mode="aspectFill"/>
+        </view>
+      </view>
+      <view class="menu-item" bindtap="onMenuTap" data-type="notification">
+        <text>消息通知设置</text>
+        <image src="/assets/icons/arrow-right.png" mode="aspectFill"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">其他</view>
+    <view class="menu-list">
+      <view class="menu-item" bindtap="onMenuTap" data-type="about">
+        <text>关于我们</text>
+        <image src="/assets/icons/arrow-right.png" mode="aspectFill"/>
+      </view>
+      <view class="menu-item" bindtap="onMenuTap" data-type="help">
+        <text>帮助与反馈</text>
+        <image src="/assets/icons/arrow-right.png" mode="aspectFill"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="logout-area">
+    <button class="btn-logout" bindtap="onLogout">退出登录</button>
+  </view>
+</view>

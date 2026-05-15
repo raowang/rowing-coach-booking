@@ -1,0 +1,151 @@
+.coach-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.coach-card:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-md);
+}
+
+.coach-card.compact {
+  padding: var(--space-3);
+}
+
+.card-main {
+  display: flex;
+}
+
+.coach-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: var(--radius-md);
+  margin-right: var(--space-3);
+  flex-shrink: 0;
+}
+
+.coach-card.compact .coach-avatar {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.coach-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.coach-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-1);
+}
+
+.coach-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-800);
+}
+
+.coach-card.compact .coach-name {
+  font-size: var(--font-size-base);
+}
+
+.coach-status {
+  font-size: var(--font-size-xs);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+}
+
+.coach-status.available {
+  background-color: rgba(56, 161, 105, 0.1);
+  color: var(--color-success);
+}
+
+.coach-status.busy {
+  background-color: rgba(229, 62, 62, 0.1);
+  color: var(--color-error);
+}
+
+.coach-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  margin-bottom: var(--space-2);
+}
+
+.coach-card.compact .coach-title {
+  font-size: var(--font-size-xs);
+}
+
+.coach-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.coach-tag {
+  font-size: var(--font-size-xs);
+  padding: 2rpx var(--space-2);
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-600);
+  border-radius: var(--radius-full);
+}
+
+.coach-stats {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+
+.stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1rpx solid var(--color-gray-100);
+}
+
+.coach-description {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-right: var(--space-3);
+}
+
+.book-btn {
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.book-btn:active {
+  background-color: var(--color-primary-dark);
+}

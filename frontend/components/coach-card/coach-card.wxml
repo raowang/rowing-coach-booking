@@ -1,0 +1,40 @@
+<view class="coach-card {{compact ? 'compact' : ''}}" bindtap="onTap">
+  <view class="card-main">
+    <image
+      class="coach-avatar"
+      src="{{coach.avatarUrl || '/assets/images/default-coach.png'}}"
+      mode="aspectFill"
+    ></image>
+    <view class="coach-info">
+      <view class="coach-header">
+        <view class="coach-name">{{coach.name}}</view>
+        <view class="coach-status {{coach.available ? 'available' : 'busy'}}">
+          {{coach.available ? '可预约' : '已约满'}}
+        </view>
+      </view>
+      <view class="coach-title">{{coach.title}}</view>
+      <view class="coach-tags">
+        <text class="coach-tag" wx:for="{{coach.tags}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+      </view>
+      <view class="coach-stats" wx:if="{{!compact}}">
+        <view class="stat-item">
+          <text class="stat-value">{{coach.rating}}</text>
+          <text class="stat-label">评分</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{coach.trainingCount}}</text>
+          <text class="stat-label">训练</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{coach.yearsOfExperience}}</text>
+          <text class="stat-label">年经验</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card-footer" wx:if="{{!compact && showBookButton}}">
+    <view class="coach-description">{{coach.description}}</view>
+    <view class="book-btn" catchtap="onBook">立即预约</view>
+  </view>
+</view>

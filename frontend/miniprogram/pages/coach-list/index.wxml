@@ -1,0 +1,91 @@
+<view class="container">
+  <view class="search-bar">
+    <input
+      class="search-input"
+      type="text"
+      placeholder="搜索教练..."
+      bindinput="onSearch"
+      value="{{searchKey}}"
+    />
+  </view>
+
+  <view class="filter-tabs">
+    <view
+      class="tab {{currentFilter === 'all' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="all"
+    >
+      全部
+    </view>
+    <view
+      class="tab {{currentFilter === 'patient' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="patient"
+    >
+      耐心型
+    </view>
+    <view
+      class="tab {{currentFilter === 'professional' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="professional"
+    >
+      专业型
+    </view>
+    <view
+      class="tab {{currentFilter === 'strict' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-filter="strict"
+    >
+      严格型
+    </view>
+  </view>
+
+  <scroll-view class="coach-list" scroll-y bindscrolltolower="onLoadMore">
+    <block wx:for="{{coaches}}" wx:key="id">
+      <view class="coach-card" bindtap="onCoachTap" data-id="{{item.id}}">
+        <view class="coach-avatar">
+          <image src="{{item.photo_url}}" mode="aspectFill"/>
+          <view class="online-badge" wx:if="{{item.is_available}}"></view>
+        </view>
+        <view class="coach-info">
+          <view class="coach-header">
+            <text class="coach-name">{{item.name}}</text>
+            <view class="coach-rating">
+              <image src="/assets/icons/star.png" mode="aspectFill"/>
+              <text>{{item.rating}}</text>
+            </view>
+          </view>
+          <view class="coach-tags">
+            <view class="tag" wx:for="{{item.specialties}}" wx:for-item="spec" wx:key="spec">{{spec}}</view>
+          </view>
+          <text class="coach-style">风格: {{item.teaching_style_text}}</text>
+          <text class="coach-bio">{{item.bio}}</text>
+        </view>
+        <view class="ai-recommend" wx:if="{{item.recommended}}">
+          <text>AI推荐</text>
+        </view>
+      </view>
+    </block>
+
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{noMore && coaches.length > 0}}">
+      <text>没有更多教练了</text>
+    </view>
+    <view class="empty" wx:if="{{coaches.length === 0 && !loading}}">
+      <text>暂无教练</text>
+    </view>
+  </scroll-view>
+
+  <view class="recommendation-banner" wx:if="{{showRecommendation}}" bindtap="onRecommendationTap">
+    <view class="banner-content">
+      <image src="/assets/icons/ai-sparkle.png" mode="aspectFill"/>
+      <view class="banner-text">
+        <text class="banner-title">AI智能推荐</text>
+        <text class="banner-desc">{{recommendation.reason}}</text>
+      </view>
+    </view>
+    <image class="arrow" src="/assets/icons/arrow-right.png" mode="aspectFill"/>
+  </view>
+</view>

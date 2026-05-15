@@ -1,0 +1,146 @@
+<view class="page">
+  <view class="profile-header">
+    <view class="header-bg"></view>
+    <view class="header-content">
+      <view class="profile-info">
+        <image
+          class="avatar"
+          src="{{member.avatarUrl || '/assets/images/default-avatar.png'}}"
+          mode="aspectFill"
+        ></image>
+        <view class="info-text">
+          <view class="name">{{member.name || '会员'}}</view>
+          <view class="member-type">{{membership.type}}</view>
+        </view>
+        <view class="edit-btn" bindtap="onEditProfile">
+          <text class="edit-icon">✏️</text>
+        </view>
+      </view>
+
+      <view class="membership-card">
+        <view class="membership-status {{membership.status}}">
+          <text class="status-dot"></text>
+          <text class="status-text">
+            {{membership.status === 'active' ? '会员有效' : membership.status === 'expiring' ? '即将到期' : '已过期'}}
+          </text>
+        </view>
+        <view class="membership-detail" bindtap="onMembershipTap">
+          <view class="detail-row">
+            <text class="detail-label">到期日期</text>
+            <text class="detail-value">{{membership.expiryDate}}</text>
+          </view>
+          <view class="detail-row" wx:if="{{membership.status !== 'expired'}}">
+            <text class="detail-label">剩余天数</text>
+            <text class="detail-value highlight">{{membership.daysRemaining}}天</text>
+          </view>
+          <view class="renew-hint" wx:if="{{membership.status === 'expiring'}}">
+            <text class="hint-icon">💡</text>
+            <text class="hint-text">续费可享受优惠</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="stats-section">
+    <view class="stats-grid">
+      <view class="stat-item">
+        <view class="stat-value">{{stats.totalTrainings}}</view>
+        <view class="stat-label">总训练次数</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{stats.thisMonth}}</view>
+        <view class="stat-label">本月训练</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{stats.consecutiveDays}}</view>
+        <view class="stat-label">连续天数</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{stats.totalHours}}</view>
+        <view class="stat-label">累计小时</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="achievements-section">
+    <view class="section-header">
+      <view class="section-title"> achievements</view>
+      <view class="section-more">我的成就</view>
+    </view>
+    <view class="achievements-grid">
+      <view
+        class="achievement-item {{item.unlocked ? 'unlocked' : 'locked'}}"
+        wx:for="{{achievements}}"
+        wx:key="id"
+      >
+        <view class="achievement-icon">{{item.icon}}</view>
+        <view class="achievement-title">{{item.title}}</view>
+        <view class="achievement-desc">{{item.desc}}</view>
+        <view class="achievement-progress" wx:if="{{!item.unlocked}}">
+          <view class="progress-bar">
+            <view class="progress-fill" style="width: {{item.progress / item.total * 100}}%"></view>
+          </view>
+          <text class="progress-text">{{item.progress}}/{{item.total}}</text>
+        </view>
+        <view class="achievement-unlocked" wx:else>
+          <text class="unlocked-icon">✓</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-item" bindtap="onTrainingHistoryTap">
+      <text class="menu-icon">📊</text>
+      <text class="menu-text">训练历史</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onMembershipTap">
+      <text class="menu-icon">💳</text>
+      <text class="menu-text">会籍信息</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onSettingsTap">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onHelpTap">
+      <text class="menu-icon">❓</text>
+      <text class="menu-text">帮助与反馈</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="recent-section" wx:if="{{recentActivities.length > 0}}">
+    <view class="section-header">
+      <view class="section-title">最近训练</view>
+      <view class="section-more" bindtap="onTrainingHistoryTap">查看全部</view>
+    </view>
+    <view class="recent-list">
+      <view
+        class="recent-item"
+        wx:for="{{recentActivities}}"
+        wx:key="id"
+      >
+        <view class="recent-date">
+          <text class="recent-day">{{item.dateDay}}</text>
+          <text class="recent-month">{{item.dateMonth}}月</text>
+        </view>
+        <view class="recent-info">
+          <view class="recent-coach">{{item.coachName}}</view>
+          <view class="recent-duration">{{item.duration || 60}}分钟</view>
+        </view>
+        <view class="recent-rating" wx:if="{{item.rating}}">
+          <text class="star">★</text>
+          <text class="rating">{{item.rating}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="logout-section">
+    <button class="btn btn-ghost btn-block">退出登录</button>
+  </view>
+</view>
