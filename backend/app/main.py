@@ -5,9 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.core.database import init_valkey, close_valkey
 from app.api.v1 import members, coaches, bookings, schedules, ai, training_records
-from app.api.ws import websocket_endpoint
 
 settings = get_settings()
 logging.basicConfig(level=logging.INFO)
@@ -17,10 +15,8 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting Rowing Coach Booking API...")
-    await init_valkey()
     yield
     logger.info("Shutting down...")
-    await close_valkey()
 
 
 app = FastAPI(
@@ -58,4 +54,5 @@ async def health_check():
 
 @app.websocket("/ws/chat/{session_id}")
 async def ws_chat(websocket, session_id: str):
+    from app.api.ws import websocket_endpoint
     await websocket_endpoint(websocket, session_id)

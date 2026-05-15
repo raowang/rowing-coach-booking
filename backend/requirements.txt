@@ -2,16 +2,13 @@ fastapi==0.111.0
 uvicorn[standard]==0.29.0
 pydantic==2.7.1
 pydantic-settings==2.2.1
-asyncpg==0.29.0
+aiosqlite==0.20.0
 sqlalchemy[asyncio]==2.0.30
-alembic==1.13.1
 python-multipart==0.0.9
 websockets==12.0
 httpx==0.27.0
-redis[hiredis]==5.0.4
 directus-sdk==0.5.0
 ollama==0.1.6
-qdrant-client==1.9.1
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-dotenv==1.0.1

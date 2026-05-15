@@ -38,11 +38,11 @@
 
 **替代方案：** 单一大模型统一处理 → **选择双Agent** 因为教练和用户场景差异大，角色分离更清晰
 
-### 2. 对话框架：RAG + Memory + 本地推理
+### 2. 对话框架：Memory + 本地推理
 
-**决策：** 使用RAG（检索增强生成） + 会话Memory + 本地LLM实现上下文理解
-- RAG：挂载业务知识库（教练信息、课程内容、场馆规则），向量存储于本地Qdrant
-- Memory：用户会话历史 + 长期偏好画像，存储于PostgreSQL（Directus）
+**决策：** 使用会话Memory + 本地LLM实现上下文理解
+- 知识库：业务信息（教练信息、课程内容、场馆规则）存储于Directus
+- Memory：用户会话历史 + 长期偏好画像，存储于SQLite（Directus）
 - **本地LLM**：Llama 3.1 8B处理简单对话（预约、查询、问候）
 - **云端LLM**：复杂推理（训练建议生成、会员画像分析）调用腾讯混元/阿里通义
 
@@ -50,15 +50,13 @@
 
 ### 3. AI推理架构：本地优先
 
-**决策：** ASR、Embedding、ML、简单LLM全部本地运行于Apple Silicon M5 Max
+**决策：** ASR、ML、简单LLM全部本地运行于Apple Silicon M5 Max
 
 | 组件 | 本地模型 | 规格 | 用途 |
 |------|----------|------|------|
 | ASR | Whisper Large V3 / SenseVoice | Q5 (~10GB) | 语音转文字 |
-| Embedding | bge-m3 | Q8 (~3GB) | 向量生成 |
 | 简单LLM | Llama 3.1 8B Q4 | (~5GB) | 简单对话、预约 |
 | 复杂LLM | Llama 3.1 70B Q4 | (~40GB) | 复杂推理 |
-| 向量库 | Qdrant (本地) | - | RAG存储 |
 
 **推理框架：** ollama (统一管理) + llama.cpp (Metal GPU加速)
 
@@ -78,11 +76,11 @@
 - 状态变更触发微信通知
 - 超时自动提醒或释放名额
 
-### 6. 数据存储：PostgreSQL + Directus + Valkey
+### 6. 数据存储：SQLite + Directus
 
-**决策：** PostgreSQL（Directus托管）存储结构化数据，Valkey缓存会话状态和热门教练
-- PostgreSQL + Directus：会员、教练、日程、训练记录等结构化数据，Directus 提供 REST/GraphQL API 并集成 MCP 服务供 Agent 调用
-- Valkey：会话状态、热门教练缓存、Token 缓存
+**决策：** SQLite数据库由Directus托管，存储所有结构化数据
+- SQLite：会员、教练、日程、训练记录等数据
+- Directus：提供 REST/GraphQL API + 管理界面 + MCP 服务供 Agent 调用
 
 ## 系统架构
 
@@ -91,11 +89,11 @@
 │                      微信小程序                          │
 │                    (会员端 / 教练端)                       │
 └────────────────────────┬────────────────────────────────┘
-                         │ HTTPS
-                         ▼
+                          │ HTTPS
+                          ▼
 ┌─────────────────────────────────────────────────────────┐
 │                    Docker Compose (本地/云端)                 │
-│         PostgreSQL + Directus + Valkey + Qdrant            │
+│         SQLite + Directus + FastAPI                      │
 └────────────────────────┬────────────────────────────────┘
                          │ 内部调用 (VPC)
                          ▼

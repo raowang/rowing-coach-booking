@@ -1,44 +1,20 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:16-alpine
-    container_name: rowing-postgres
-    environment:
-      POSTGRES_DB: rowing_coach
-      POSTGRES_USER: rowing_user
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rowing_secret}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rowing_user -d rowing_coach"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   # Directus - Headless CMS / API Layer
   directus:
     image: directus/directus:latest
     container_name: rowing-directus
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
-      DB_CLIENT: pg
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_DATABASE: rowing_coach
-      DB_USER: rowing_user
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-rowing_secret}
+      DB_CLIENT: sqlite
+      DB_FILENAME: /data/rowing.db
       SECRET: ${DIRECTUS_SECRET:-your-secret-key}
       ADMIN_EMAIL: admin@rowing.com
       ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-admin123}
     ports:
       - "8055:8055"
     volumes:
+      - sqlite_data:/data
       - directus_uploads:/directus/uploads
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8055/server/health"]
@@ -46,38 +22,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Valkey - Redis Protocol (Cache)
-  valkey:
-    image: valkey/valkey:latest
-    container_name: rowing-valkey
-    command: valkey-server --appendonly yes
-    ports:
-      - "6379:6379"
-    volumes:
-      - valkey_data:/data
-    healthcheck:
-      test: ["CMD", "valkey-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # Qdrant - Vector Database for RAG
-  qdrant:
-    image: qdrant/qdrant:latest
-    container_name: rowing-qdrant
-    ports:
-      - "6333:6333"
-      - "6334:6334"
-    volumes:
-      - qdrant_data:/qdrant/storage
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/readyz"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
 volumes:
-  postgres_data:
+  sqlite_data:
   directus_uploads:
-  valkey_data:
-  qdrant_data:
