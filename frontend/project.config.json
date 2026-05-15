@@ -18,12 +18,10 @@
     "minified": true,
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
     "uglifyFileName": false,
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
-    "compileHotReLoad": true,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -37,15 +35,30 @@
     "userConfirmedUseCompiler": false,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "minifyWXSS": true
+    "minifyWXSS": true,
+    "condition": true,
+    "compileWorklet": false,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.25.0",
-  "appid": "wxxxxxxxxxxxxx",
+  "appid": "wx0c97a8e0fcdc7b5a",
   "projectname": "rowing-coach-booking",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {
+    "wxext14566970e7e9f62": "3.6.5-41"
+  },
+  "projectArchitecture": "multiPlatform"
 }
