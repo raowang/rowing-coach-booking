@@ -3,7 +3,6 @@ from datetime import date, datetime, timedelta
 from typing import Optional
 
 from app.core.directus import get_directus_client
-from app.core.database import valkey_client
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +10,13 @@ logger = logging.getLogger(__name__)
 class EngagementService:
     def __init__(self):
         self.directus = get_directus_client()
+        self._sent_cache: set[str] = set()
+
+    def _check_and_mark_sent(self, cache_key: str) -> bool:
+        if cache_key in self._sent_cache:
+            return False
+        self._sent_cache.add(cache_key)
+        return True
 
     async def check_birthday_members(self) -> list[dict]:
         today = date.today()
@@ -112,30 +118,24 @@ class EngagementService:
 
     async def send_birthday_message(self, member_id: str) -> bool:
         cache_key = f"birthday_sent:{member_id}:{date.today().isoformat()}"
-        if valkey_client:
-            if valkey_client.exists(cache_key):
-                return False
-            valkey_client.setex(cache_key, 86400, "1")
+        if not self._check_and_mark_sent(cache_key):
+            return False
 
         logger.info(f"Birthday message would be sent to member {member_id}")
         return True
 
     async def send_renewal_reminder(self, member_id: str) -> bool:
         cache_key = f"renewal_reminder:{member_id}"
-        if valkey_client:
-            if valkey_client.exists(cache_key):
-                return False
-            valkey_client.setex(cache_key, 86400, "1")
+        if not self._check_and_mark_sent(cache_key):
+            return False
 
         logger.info(f"Renewal reminder would be sent to member {member_id}")
         return True
 
     async def send_inactivity_reminder(self, member_id: str) -> bool:
         cache_key = f"inactivity_reminder:{member_id}:{date.today().isoformat()}"
-        if valkey_client:
-            if valkey_client.exists(cache_key):
-                return False
-            valkey_client.setex(cache_key, 86400, "1")
+        if not self._check_and_mark_sent(cache_key):
+            return False
 
         logger.info(f"Inactivity reminder would be sent to member {member_id}")
         return True

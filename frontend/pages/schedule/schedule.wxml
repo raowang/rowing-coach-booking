@@ -29,6 +29,7 @@
             <view class="date-day">{{item.dateDay}}</view>
             <view class="date-month">{{item.dateMonth}}月</view>
           </view>
+          <image class="booking-avatar" src="{{item.coachAvatar || '/miniprogram/assets/images/coach-1.png'}}" mode="aspectFill"></image>
           <view class="booking-info">
             <view class="booking-coach">{{item.coachName}}</view>
             <view class="booking-time">{{item.timeSlot}}</view>

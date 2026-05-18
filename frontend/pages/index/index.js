@@ -32,28 +32,28 @@ Page({
     const actions = [
       {
         id: 'booking',
-        icon: '📅',
+        icon: '🚣',
         title: '预约训练',
         desc: '快速预约教练',
         path: '/pages/booking/booking'
       },
       {
         id: 'coaches',
-        icon: '🏃',
+        icon: '🧔',
         title: '查看教练',
         desc: '了解教练团队',
         path: '/pages/coach-list/coach-list'
       },
       {
         id: 'schedule',
-        icon: '📋',
+        icon: '📅',
         title: '我的日程',
         desc: '查看预约记录',
         path: '/pages/schedule/schedule'
       },
       {
         id: 'feedback',
-        icon: '💬',
+        icon: '🏆',
         title: '训练反馈',
         desc: '查看教练点评',
         path: '/pages/feedback/feedback'

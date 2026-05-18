@@ -1,3 +1,20 @@
+// Dummy schedule data
+const dummyUpcomingBookings = [
+  { id: 'b1', coachName: '张教练', coachAvatar: '/miniprogram/assets/images/coach-1.png', date: '2026-05-20', dateDay: '20', dateMonth: '5', timeSlot: '09:00-11:00', status: 'confirmed', statusText: '已确认', location: '2号航道' },
+  { id: 'b2', coachName: '陈教练', coachAvatar: '/miniprogram/assets/images/coach-4.png', date: '2026-05-22', dateDay: '22', dateMonth: '5', timeSlot: '14:00-16:00', status: 'pending', statusText: '待确认', location: '1号航道' },
+  { id: 'b3', coachName: '李教练', coachAvatar: '/miniprogram/assets/images/coach-2.png', date: '2026-05-25', dateDay: '25', dateMonth: '5', timeSlot: '10:00-12:00', status: 'confirmed', statusText: '已确认', location: '3号航道' }
+];
+
+const dummyCompletedBookings = [
+  { id: 'b4', coachName: '张教练', coachAvatar: '/miniprogram/assets/images/coach-1.png', date: '2026-05-15', dateDay: '15', dateMonth: '5', timeSlot: '09:00-11:00', status: 'completed', statusText: '已完成', location: '2号航道', rating: 5 },
+  { id: 'b5', coachName: '王教练', coachAvatar: '/miniprogram/assets/images/coach-3.png', date: '2026-05-10', dateDay: '10', dateMonth: '5', timeSlot: '14:00-16:00', status: 'completed', statusText: '已完成', location: '1号航道', rating: 4 },
+  { id: 'b6', coachName: '陈教练', coachAvatar: '/miniprogram/assets/images/coach-4.png', date: '2026-05-05', dateDay: '05', dateMonth: '5', timeSlot: '10:00-12:00', status: 'completed', statusText: '已完成', location: '3号航道', rating: 5 }
+];
+
+const dummyCancelledBookings = [
+  { id: 'b7', coachName: '刘教练', coachAvatar: '/miniprogram/assets/images/coach-5.png', date: '2026-05-08', dateDay: '08', dateMonth: '5', timeSlot: '09:00-11:00', status: 'cancelled', statusText: '已取消', location: '2号航道', cancelReason: '天气原因取消' }
+];
+
 Page({
   data: {
     activeTab: 'upcoming',
@@ -14,7 +31,8 @@ Page({
     selectedBooking: null,
     showCancelModal: false,
     cancelReason: '',
-    isCancelling: false
+    isCancelling: false,
+    useMockData: true
   },
 
   onLoad(options) {
@@ -29,6 +47,19 @@ Page({
 
   loadBookings() {
     this.setData({ isLoading: true });
+
+    if (this.data.useMockData) {
+      setTimeout(() => {
+        this.setData({
+          upcomingBookings: dummyUpcomingBookings,
+          completedBookings: dummyCompletedBookings,
+          cancelledBookings: dummyCancelledBookings,
+          bookings: dummyUpcomingBookings,
+          isLoading: false
+        });
+      }, 500);
+      return;
+    }
 
     const app = getApp();
 

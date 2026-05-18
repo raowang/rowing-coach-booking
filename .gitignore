@@ -41,3 +41,8 @@ build/
 *.key
 credentials.json
 service-account.json
+
+
+# Claude
+.claude
+CLAUDE.md

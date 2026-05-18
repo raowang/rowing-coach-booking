@@ -7,22 +7,21 @@
     "pages/profile/profile",
     "pages/feedback/feedback"
   ],
-  "subPackages": [],
   "window": {
-    "navigationBarBackgroundColor": "#1a365d",
+    "navigationBarBackgroundColor": "#1E40AF",
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "赛艇中心",
     "navigationStyle": "custom",
-    "backgroundColor": "#f7fafc",
+    "backgroundColor": "#F3F4F6",
     "backgroundTextStyle": "dark",
     "enablePullDownRefresh": false,
     "onReachBottomDistance": 50
   },
   "tabBar": {
-    "color": "#718096",
-    "selectedColor": "#1a365d",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "color": "#6B7280",
+    "selectedColor": "#F59E0B",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

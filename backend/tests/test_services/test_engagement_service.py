@@ -13,17 +13,10 @@ from app.services.engagement_service import EngagementService
 
 class TestEngagementService:
     @pytest.fixture
-    def service_with_mocks(self, mock_directus_client: MagicMock, mock_valkey_client: MagicMock):
+    def service_with_mocks(self, mock_directus_client: MagicMock):
         service = EngagementService()
         service.directus = mock_directus_client
         return service
-
-    @pytest.fixture
-    def service_with_valkey(self, mock_directus_client: MagicMock, mock_valkey_client: MagicMock):
-        service = EngagementService()
-        service.directus = mock_directus_client
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            yield service, mock_valkey_client
 
     @pytest.mark.asyncio
     async def test_check_birthday_members_found(
@@ -98,67 +91,52 @@ class TestEngagementService:
     async def test_send_birthday_message_success(
         self,
         service_with_mocks: EngagementService,
-        mock_valkey_client: MagicMock,
     ):
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            mock_valkey_client.exists = MagicMock(return_value=False)
-            result = await service_with_mocks.send_birthday_message("member-123")
-            assert result is True
+        result = await service_with_mocks.send_birthday_message("member-123")
+        assert result is True
 
     @pytest.mark.asyncio
     async def test_send_birthday_message_already_sent(
         self,
         service_with_mocks: EngagementService,
-        mock_valkey_client: MagicMock,
     ):
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            mock_valkey_client.exists = MagicMock(return_value=True)
-            result = await service_with_mocks.send_birthday_message("member-123")
-            assert result is False
+        await service_with_mocks.send_birthday_message("member-123")
+        result = await service_with_mocks.send_birthday_message("member-123")
+        assert result is False
 
     @pytest.mark.asyncio
     async def test_send_renewal_reminder_success(
         self,
         service_with_mocks: EngagementService,
-        mock_valkey_client: MagicMock,
     ):
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            mock_valkey_client.exists = MagicMock(return_value=False)
-            result = await service_with_mocks.send_renewal_reminder("member-123")
-            assert result is True
+        result = await service_with_mocks.send_renewal_reminder("member-123")
+        assert result is True
 
     @pytest.mark.asyncio
     async def test_send_renewal_reminder_already_sent(
         self,
         service_with_mocks: EngagementService,
-        mock_valkey_client: MagicMock,
     ):
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            mock_valkey_client.exists = MagicMock(return_value=True)
-            result = await service_with_mocks.send_renewal_reminder("member-123")
-            assert result is False
+        await service_with_mocks.send_renewal_reminder("member-123")
+        result = await service_with_mocks.send_renewal_reminder("member-123")
+        assert result is False
 
     @pytest.mark.asyncio
     async def test_send_inactivity_reminder_success(
         self,
         service_with_mocks: EngagementService,
-        mock_valkey_client: MagicMock,
     ):
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            mock_valkey_client.exists = MagicMock(return_value=False)
-            result = await service_with_mocks.send_inactivity_reminder("member-123")
-            assert result is True
+        result = await service_with_mocks.send_inactivity_reminder("member-123")
+        assert result is True
 
     @pytest.mark.asyncio
     async def test_send_inactivity_reminder_already_sent(
         self,
         service_with_mocks: EngagementService,
-        mock_valkey_client: MagicMock,
     ):
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            mock_valkey_client.exists = MagicMock(return_value=True)
-            result = await service_with_mocks.send_inactivity_reminder("member-123")
-            assert result is False
+        await service_with_mocks.send_inactivity_reminder("member-123")
+        result = await service_with_mocks.send_inactivity_reminder("member-123")
+        assert result is False
 
     @pytest.mark.asyncio
     async def test_trigger_engagement_checks_all_pass(
@@ -198,12 +176,9 @@ class TestEngagementService:
                 {"data": []},
             ]
         )
-        mock_valkey_client = MagicMock()
-        mock_valkey_client.exists = MagicMock(return_value=False)
-        with patch("app.core.database.valkey_client", mock_valkey_client):
-            results = await service_with_mocks.trigger_engagement_checks()
-            assert results["birthday_members_count"] == 1
-            assert results["renewal_members_count"] == 1
+        results = await service_with_mocks.trigger_engagement_checks()
+        assert results["birthday_members_count"] == 1
+        assert results["renewal_members_count"] == 1
 
     @pytest.mark.asyncio
     async def test_get_last_booking_found(

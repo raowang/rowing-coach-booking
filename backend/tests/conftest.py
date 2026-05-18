@@ -24,15 +24,6 @@ def mock_directus_client():
 
 
 @pytest.fixture
-def mock_valkey_client():
-    """Create a mock Valkey/Redis client."""
-    mock_client = MagicMock()
-    mock_client.exists = MagicMock(return_value=False)
-    mock_client.setex = MagicMock(return_value=True)
-    return mock_client
-
-
-@pytest.fixture
 def sample_member_data() -> dict[str, Any]:
     """Sample member data for tests."""
     return {
@@ -150,8 +141,4 @@ async def mock_directus_dependency(mock_directus_client):
         yield mock_directus_client
 
 
-@pytest_asyncio.fixture
-async def mock_valkey_dependency(mock_valkey_client):
-    """Override valkey_client dependency in services."""
-    with patch("app.core.database.valkey_client", mock_valkey_client):
-        yield mock_valkey_client
+

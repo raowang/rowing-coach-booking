@@ -48,7 +48,7 @@
     "disableSWC": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.25.0",
+  "libVersion": "3.16.0",
   "appid": "wx0c97a8e0fcdc7b5a",
   "projectname": "rowing-coach-booking",
   "condition": {},

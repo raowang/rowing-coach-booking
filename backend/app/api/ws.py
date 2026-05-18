@@ -5,7 +5,6 @@ from typing import Optional
 from fastapi import WebSocket, WebSocketDisconnect
 
 from app.services.ai_service import ai_service, SYSTEM_PROMPTS
-from app.core.database import valkey_client
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +12,7 @@ logger = logging.getLogger(__name__)
 class ConnectionManager:
     def __init__(self):
         self.active_connections: dict[str, WebSocket] = {}
+        self.context_cache: dict[str, list] = {}
 
     async def connect(self, websocket: WebSocket, session_id: str):
         await websocket.accept()
@@ -31,6 +31,16 @@ class ConnectionManager:
     def get_context_key(self, session_id: str) -> str:
         return f"chat_context:{session_id}"
 
+    def get_context(self, session_id: str) -> list:
+        return self.context_cache.get(session_id, [])
+
+    def set_context(self, session_id: str, context: list):
+        self.context_cache[session_id] = context
+
+    def clear_context(self, session_id: str):
+        if session_id in self.context_cache:
+            del self.context_cache[session_id]
+
 
 manager = ConnectionManager()
 
@@ -38,16 +48,7 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, session_id: str):
     await manager.connect(websocket, session_id)
 
-    context_key = manager.get_context_key(session_id)
-
-    if valkey_client:
-        cached_context = valkey_client.get(context_key)
-        if cached_context and isinstance(cached_context, str):
-            context = json.loads(cached_context)
-        else:
-            context = []
-    else:
-        context = []
+    context = manager.get_context(session_id)
 
     try:
         await websocket.send_json({
@@ -91,8 +92,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                         if len(context) > 20:
                             context = context[-20:]
 
-                        if valkey_client:
-                            valkey_client.setex(context_key, 3600, json.dumps(context))
+                        manager.set_context(session_id, context)
 
                         await websocket.send_json({
                             "type": "message",
@@ -109,8 +109,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
 
             elif data.get("type") == "clear_context":
                 context = []
-                if valkey_client:
-                    valkey_client.delete(context_key)
+                manager.clear_context(session_id)
                 await websocket.send_json({
                     "type": "context_cleared"
                 })

@@ -1,6 +1,7 @@
 <view class="page">
   <view class="header">
-    <view class="header-bg"></view>
+    <image class="header-banner" src="/miniprogram/assets/images/banner.jpg" mode="aspectFill"></image>
+    <view class="header-overlay"></view>
     <view class="header-content">
       <view class="greeting-section">
         <text class="greeting-text">{{greeting}}</text>
@@ -87,7 +88,7 @@
     <view class="tips-section">
       <view class="section-title">训练小贴士</view>
       <view class="tip-card">
-        <view class="tip-icon">💡</view>
+        <view class="tip-icon">🔥</view>
         <view class="tip-content">
           <view class="tip-title">划水动作优化</view>
           <view class="tip-desc">保持划水时肘部高于手腕，可以提高划水效率约15%</view>
